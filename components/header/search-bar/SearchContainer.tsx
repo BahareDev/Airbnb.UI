@@ -1,36 +1,57 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import SearchMapResult from "./SearchMapResult";
 import SearchListResult from "./SearchListResult";
-import SearchInput from "./SearchInput";
+import SearchResult from "./SearchResult";
 
 interface SearchContainerProps {
   isOpen: boolean;
+  isvisible: boolean;
+  query?: string;
+  toggleMenu?: () => void;
+  inputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchContainer: React.FC<SearchContainerProps> = ({ isOpen }) => {
+const countryNames = {
+  1: "Flexible",
+  2: "Africa",
+  3: "Germany",
+  4: "Netherlands",
+  5: "South America",
+  6: "Spain",
+  7: "United States",
+};
+
+const SearchContainer: React.FC<SearchContainerProps> = ({
+  isOpen,
+  isvisible,
+  query,
+  toggleMenu,
+  inputChange,
+}) => {
   return (
     <>
       {/* Search container Desktop */}
-
-      <div className={`relative ${isOpen ? "block" : "hidden"}`}>
-        <div className="hidden absolute top-full z-50 bg-white w-max mt-4 p-4 border border-slate-300 rounded-md md:block ">
-          <div>
-            <h2 className="text-lg font-semibold">Search By Region</h2>
+      <div className={`reletive ${isOpen ? "block" : "hidden"}`}>
+        {isvisible && query ? (
+          <div className="reletive w-full max-w-md mx-auto mt-10 bg-white">
+            <SearchListResult />
           </div>
-          <SearchMapResult />
-        </div>
+        ) : (
+          <div className="hidden absoulte w-[600px] top-full z-50 bg-white max-w-max mt-4 p-4 border border-slate-300 rounded-3xl md:block">
+            <SearchMapResult />
+          </div>
+        )}
       </div>
 
-      {/* Search container Mobile */}
-
-      <div className="fixed z-20 w-full bg-white rounded-lg p-5 mt-4 border-gray-300 border space-y-6  overflow-hidden md:hidden ">
-        <div className="font-bold text-2xl">
-          <h2>Where to?</h2>
-        </div>
-        <SearchInput placeholder="Search Destinatin" />
-
-        <SearchMapResult />
-        <SearchListResult />
+      <div className="bg-red-700">
+        <SearchResult
+          query={query || ""}
+          isOpen={isOpen}
+          toggleMenu={toggleMenu}
+          inputChange={inputChange}
+          isvisible={isvisible}
+          searchResults={[]}
+        />
       </div>
     </>
   );

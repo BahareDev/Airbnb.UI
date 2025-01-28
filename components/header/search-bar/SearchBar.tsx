@@ -1,31 +1,64 @@
 "use client";
 
 import React, { useState } from "react";
-import SearchButton from "../search-bar/SearchButton";
 import SearchContainer from "./SearchContainer";
 import SearchInput from "./SearchInput";
 
 export const SearchBar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [searchState, setSearchstate] = useState({
+    isOpen: false,
+    query: "",
+    isVisible: false,
+  });
 
-  const handleInputClick = () => {
-    setIsOpen(!isOpen);
+  // State to store the input value
+  // State to control visibility
+
+  const toggleMenu = () => {
+    setSearchstate((prevState) => ({
+      ...prevState,
+      isOpen: !prevState.isOpen,
+    }));
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchstate((prevState) => ({
+      ...prevState,
+      query: value,
+      isVisible: value.length > 0,
+    }));
+  };
   return (
     <>
-      <div className="w-full mt-10 bg-red-300 relative ">
-        <div className="block md:hidden">
-          <SearchButton />
-        </div>
-      </div>
+      <li className="w-[33%] h-full flex items-end justify-center hover:rounded-full hover:bg-gray-300 p-1 rounded-full">
+        <div
+          className="w-full h-full mt-4 px-6 py-2 rounded-full "
+          onClick={toggleMenu}
+        >
+          <span className="text-neutral text-xs font-semibold">Where</span>
+          {/* inputContainer  */}
+          <div className="hidden md:block">
+            <SearchInput
+              placeholder="Search Destintaion"
+              value={searchState.query}
+              onChange={handleInputChange}
+              className="p-0"
+            />
+          </div>
 
-      <div className="hidden md:block">
-        <SearchInput placeholder="Search ..." onClick={handleInputClick} />
-      </div>
-      <div>
-        <SearchContainer isOpen={isOpen} />
-      </div>
+          {/* Results Container : map / list */}
+          <div className="">
+            <SearchContainer
+              isOpen={searchState.isOpen}
+              isvisible={searchState.isVisible}
+              query={searchState.query}
+              toggleMenu={toggleMenu}
+              inputChange={handleInputChange}
+            />
+          </div>
+        </div>
+      </li>
     </>
   );
 };

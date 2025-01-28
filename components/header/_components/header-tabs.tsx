@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SearchBar from "../search-bar/SearchBar";
 
 export const HeaderTabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"Stays" | "Experiences">("Stays");
@@ -33,18 +34,7 @@ export const HeaderTabs: React.FC = () => {
       <div className="w-[60%] bg-gray-100 flex items-center justify-between border border-gray-300 shadow-md rounded-full transition-all duration-300 h-16 text-neutral-800 font-semibold text-sm">
         {activeTab === "Stays" && (
           <ul className="flex justify-between items-center w-full h-full">
-            <li className="w-[33%] h-full flex flex-col items-start justify-center hover:rounded-full hover:bg-gray-300 p-1 rounded-full">
-              <div className="p-2 flex flex-col justify-center items-start">
-                <span className="text-neutral text-xs font-semibold">
-                  Where
-                </span>
-                <input
-                  type="text"
-                  placeholder="Search destinations"
-                  className="bg-transparent focus:outline-none text-sm"
-                />
-              </div>
-            </li>
+            <SearchBar />
 
             <li className="w-[33%] h-full flex items-start justify-center hover:rounded-full rounded-full hover:border-none">
               <div className="w-1/2 h-full p-2 hover:rounded-full hover:bg-gray-300 hover:border-none">
